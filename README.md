@@ -14,7 +14,7 @@ A lightweight widget that provides real-time AQI monitoring from your Air purifi
 
 ## UI
 
-![AirCheck Interface Preview](assets/ui-app.png)
+![AirCheck Interface Preview](assets/ui-widget.png)
 
 ## Data Sources
 
