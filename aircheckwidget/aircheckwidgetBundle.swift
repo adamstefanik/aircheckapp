@@ -12,7 +12,5 @@ import SwiftUI
 struct AirCheckWidgetBundle: WidgetBundle {
     var body: some Widget {
         AirCheckWidget()
-        aircheckwidgetControl()
-        aircheckwidgetLiveActivity()
     }
 }

@@ -49,14 +49,11 @@ final class PurifierService {
 
     private func getStatusMiOT() async throws -> PurifierStatus {
         let r = try await connection.send(method: "get_properties", params: [
-            ["did": "power",       "siid": 2,  "piid": 2],
-            ["did": "mode",        "siid": 2,  "piid": 5],
-            ["did": "aqi",         "siid": 3,  "piid": 6],
-            ["did": "humidity",    "siid": 3,  "piid": 7],
-            ["did": "temp",        "siid": 3,  "piid": 8],
-            ["did": "filter_life", "siid": 4,  "piid": 3],
-            ["did": "motor_speed", "siid": 10, "piid": 8],
-            ["did": "fav_level",   "siid": 10, "piid": 10]
+            ["did": "power",       "siid": 2,  "piid": 1],
+            ["did": "mode",        "siid": 2,  "piid": 4],
+            ["did": "aqi",         "siid": 3,  "piid": 4],
+            ["did": "filter_life", "siid": 4,  "piid": 1],
+            ["did": "motor_speed", "siid": 11, "piid": 4]
         ])
         guard let result = r["result"] as? [[String: Any]] else {
             throw MiIOError.invalidPacket
@@ -68,10 +65,10 @@ final class PurifierService {
         return PurifierStatus(
             isOn:                val("power") as? Bool ?? false,
             pm25:                val("aqi") as? Int ?? 0,
-            temperature:         val("temp") as? Double ?? 0,
-            humidity:            val("humidity") as? Int ?? 0,
+            temperature:         0,
+            humidity:            0,
             mode:                modeMap[val("mode") as? Int ?? 0] ?? .auto,
-            favoriteLevel:       val("fav_level") as? Int ?? 0,
+            favoriteLevel:       0,
             filterLifeRemaining: val("filter_life") as? Int ?? 0,
             motorSpeed:          val("motor_speed") as? Int ?? 0,
             fetchedAt:           Date()
