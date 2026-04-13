@@ -16,11 +16,6 @@ A lightweight widget that provides real-time AQI monitoring from your Air purifi
 
 ![AirCheck Interface Preview](assets/ui-widget.png)
 
-## Data Sources
-
-- **AQI Data** — [OpenWeatherMap Air Pollution API](https://openweathermap.org/api/air-pollution)
-- **Geocoding** — Native Apple CoreLocation
-
 ## Tech Stack
 
 - **SwiftUI**
