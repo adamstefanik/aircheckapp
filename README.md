@@ -1,4 +1,5 @@
-![AirCheck App Icon](aircheckapp/Assets.xcassets/AppIcon.appiconset/1024.png)
+![AirCheck Interface Preview](assets/ui-widget.png)
+
 ![Swift](https://img.shields.io/badge/Swift-6.0+-orange.svg) ![macOS](https://img.shields.io/badge/macOS-15+-black.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg) 
 
 # AirCheck
@@ -11,10 +12,6 @@ A lightweight widget that provides real-time AQI monitoring from your Air purifi
 - **Real-time AQI Tracking:** Live Air Quality Index data directly in your macOS/iOS Menu Bar.
 - **Location-based Updates:** Automatically fetches air quality data based on your current location.
 - **Automatic Refresh:** Data updates in the background at regular intervals.
-
-## UI
-
-![AirCheck Interface Preview](assets/ui-widget.png)
 
 ## Tech Stack
 
