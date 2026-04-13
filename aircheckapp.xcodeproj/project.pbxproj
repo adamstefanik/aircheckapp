@@ -68,11 +68,23 @@
 			);
 			target = CC952D892F8D33500072BFF8 /* aircheckwidgetExtension */;
 		};
+		CC952DCB2F8D63870072BFF8 /* Exceptions for "aircheckapp" folder in "aircheckwidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Data+Hex.swift",
+				MiIOCrypto.swift,
+				MiIOPacket.swift,
+			);
+			target = CC952D892F8D33500072BFF8 /* aircheckwidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CC952D5D2F8D324C0072BFF8 /* aircheckapp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CC952DCB2F8D63870072BFF8 /* Exceptions for "aircheckapp" folder in "aircheckwidgetExtension" target */,
+			);
 			path = aircheckapp;
 			sourceTree = "<group>";
 		};
