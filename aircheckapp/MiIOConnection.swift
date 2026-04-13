@@ -18,6 +18,7 @@ final class MiIOConnection: MiIOConnecting {
     private let port: NWEndpoint.Port = 54321
     let token: Data
     private var messageId = 1
+    private let idLock = NSLock()
 
     init(host: String, token: String) {
         self.host = NWEndpoint.Host(host)
@@ -27,8 +28,9 @@ final class MiIOConnection: MiIOConnecting {
     func connect() async throws {
         let params = NWParameters.udp
         params.allowLocalEndpointReuse = true
-        connection = NWConnection(host: host, port: port, using: params)
-        connection!.start(queue: .global())
+        let conn = NWConnection(host: host, port: port, using: params)
+        connection = conn
+        conn.start(queue: .global())
         try await udpSend(MiIOPacket.helloPacket())
         let resp = try await receiveWithTimeout(seconds: 3)
         let parsed = try MiIOPacket.parse(resp, token: token)
@@ -36,8 +38,16 @@ final class MiIOConnection: MiIOConnecting {
         timestamp = parsed.timestamp
     }
 
+    private func nextMessageId() -> Int {
+        idLock.lock()
+        defer { idLock.unlock() }
+        let id = messageId
+        messageId += 1
+        return id
+    }
+
     func send(method: String, params: [Any] = []) async throws -> [String: Any] {
-        let id = messageId; messageId += 1
+        let id = nextMessageId()
         let payload = try JSONSerialization.data(
             withJSONObject: ["id": id, "method": method, "params": params])
         let packet = try MiIOPacket.buildPacket(
