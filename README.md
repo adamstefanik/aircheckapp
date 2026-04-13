@@ -8,7 +8,6 @@ A lightweight widget that provides real-time AQI monitoring from your Air purifi
 
 ## Features
 
-**App & Menu Bar**
 - **Real-time AQI Tracking:** Live Air Quality Index data directly in your macOS/iOS Menu Bar.
 - **Location-based Updates:** Automatically fetches air quality data based on your current location.
 - **Automatic Refresh:** Data updates in the background at regular intervals.
