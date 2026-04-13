@@ -9,9 +9,9 @@ import WidgetKit
 import SwiftUI
 
 @main
-struct aircheckwidgetBundle: WidgetBundle {
+struct AirCheckWidgetBundle: WidgetBundle {
     var body: some Widget {
-        aircheckwidget()
+        AirCheckWidget()
         aircheckwidgetControl()
         aircheckwidgetLiveActivity()
     }
