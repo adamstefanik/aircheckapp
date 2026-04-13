@@ -5,6 +5,7 @@ extension Data {
     init?(hexString: String) {
         let hex = hexString.lowercased()
         guard hex.count % 2 == 0 else { return nil }
+        guard hex.isEmpty || hex.allSatisfy({ $0.isHexDigit }) else { return nil }
         var data = Data(capacity: hex.count / 2)
         var index = hex.startIndex
         while index < hex.endIndex {

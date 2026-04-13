@@ -27,4 +27,17 @@ final class DataHexTests: XCTestCase {
     func test_dataToHex() {
         XCTAssertEqual(Data([0xDE, 0xAD, 0xBE, 0xEF]).hexString, "deadbeef")
     }
+
+    func test_hexToData_withSpaces_returnsNil() {
+        XCTAssertNil(Data(hexString: "00 11 22 33"))
+    }
+
+    func test_hexToData_empty_returnsEmptyData() {
+        XCTAssertEqual(Data(hexString: "")?.count, 0)
+    }
+
+    func test_roundtrip() {
+        let original = Data([0x00, 0x11, 0xAA, 0xFF])
+        XCTAssertEqual(Data(hexString: original.hexString), original)
+    }
 }
