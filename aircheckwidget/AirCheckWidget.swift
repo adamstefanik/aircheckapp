@@ -7,6 +7,7 @@ struct PurifierEntry: TimelineEntry {
     let date: Date
     let config: DeviceConfig?
     let status: PurifierStatus?
+    let outdoor: OutdoorData?
     let error: String?
 }
 
@@ -18,10 +19,11 @@ struct AirCheckTimelineProvider: TimelineProvider {
             date: Date(),
             config: DeviceConfig(name: "Obývačka", ipAddress: "", protocolVersion: .miOT),
             status: PurifierStatus(
-                isOn: true, pm25: 23, temperature: 22.5, humidity: 48,
-                mode: .auto, favoriteLevel: 8, filterLifeRemaining: 80,
+                isOn: true, pm25: 23, temperature: 0, humidity: 0,
+                mode: .auto, favoriteLevel: 0, filterLifeRemaining: 80,
                 motorSpeed: 1200, fetchedAt: Date()
             ),
+            outdoor: OutdoorData(aqi: 35, temperature: 14.0),
             error: nil
         )
     }
@@ -40,22 +42,27 @@ struct AirCheckTimelineProvider: TimelineProvider {
 
     private func fetchEntry() async -> PurifierEntry {
         guard let config = ConfigStore.shared.load() else {
-            return PurifierEntry(date: Date(), config: nil, status: nil,
+            return PurifierEntry(date: Date(), config: nil, status: nil, outdoor: nil,
                                  error: "Nastav zariadenie v appke")
         }
         guard let token = try? TokenStorage.load() else {
-            return PurifierEntry(date: Date(), config: config, status: nil,
+            return PurifierEntry(date: Date(), config: config, status: nil, outdoor: nil,
                                  error: "Token nenájdený — otvor appku")
         }
+        async let outdoorFetch: OutdoorData? = {
+            guard !config.city.isEmpty else { return nil }
+            let svc = OutdoorService(city: config.city, aqicnToken: config.aqicnToken)
+            return await svc.fetch()
+        }()
         do {
             let conn = MiIOConnection(host: config.ipAddress, token: token)
             let service = PurifierService(connection: conn, protocolVersion: config.protocolVersion)
             try await service.connect()
             let status = try await service.getStatus()
             conn.disconnect()
-            return PurifierEntry(date: Date(), config: config, status: status, error: nil)
+            return PurifierEntry(date: Date(), config: config, status: status, outdoor: await outdoorFetch, error: nil)
         } catch {
-            return PurifierEntry(date: Date(), config: config, status: nil, error: "Offline")
+            return PurifierEntry(date: Date(), config: config, status: nil, outdoor: await outdoorFetch, error: "Offline")
         }
     }
 }

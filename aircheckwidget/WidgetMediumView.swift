@@ -29,12 +29,11 @@ struct WidgetMediumView: View {
                     Text(entry.config?.name ?? "")
                         .font(.headline)
                         .lineLimit(1)
-                    Label(String(format: "%.1f\u{00B0}C", status.temperature),
-                          systemImage: "thermometer")
+                    Label(status.mode.displayName, systemImage: "wind")
                         .font(.subheadline)
-                    Label("\(status.humidity)%", systemImage: "humidity")
+                    Label("Filter: \(status.filterLifeRemaining)%", systemImage: "air.purifier")
                         .font(.subheadline)
-                    Text(status.mode.displayName + " \u{2022} " + (status.isOn ? "ON" : "OFF"))
+                    Text(status.isOn ? "Zapnuté" : "Vypnuté")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

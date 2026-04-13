@@ -2,31 +2,38 @@ import SwiftUI
 import WidgetKit
 
 struct SettingsView: View {
-    @State private var name  = ""
-    @State private var ip    = ""
-    @State private var token = ""
-    @State private var proto = DeviceConfig.ProtocolVersion.miOT
-    @State private var saved = false
+    @State private var ip         = Secrets.defaultIP
+    @State private var token      = Secrets.defaultToken
+    @State private var proto      = DeviceConfig.ProtocolVersion.miOT
+    @State private var city       = ""
+    @State private var aqicnToken = Secrets.defaultAQICNToken
+    @State private var saved      = false
     @State private var errorMessage: String?
 
     var body: some View {
         NavigationStack {
             Form {
                 Section("Zariadenie") {
-                    TextField("Meno (napr. Obývačka)", text: $name)
                     TextField("IP adresa (192.168.x.x)", text: $ip)
+                        #if os(iOS)
                         .keyboardType(.numbersAndPunctuation)
-                }
-                Section {
+                        #endif
                     TextField("32-znakový hex token", text: $token)
                         .font(.system(.body, design: .monospaced))
                         .autocorrectionDisabled()
+                        #if os(iOS)
                         .textInputAutocapitalization(.never)
-                    Text("Token získaš cez:\npip install python-miio\nmiiocli cloud")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } header: {
-                    Text("Token")
+                        #endif
+                }
+                Section("Vonkajšie podmienky (voliteľné)") {
+                    TextField("Mesto (napr. Bratislava)", text: $city)
+                        .autocorrectionDisabled()
+                    TextField("AQICN token", text: $aqicnToken)
+                        .font(.system(.body, design: .monospaced))
+                        .autocorrectionDisabled()
+                        #if os(iOS)
+                        .textInputAutocapitalization(.never)
+                        #endif
                 }
                 Section("Protokol") {
                     Picker("Protokol", selection: $proto) {
@@ -48,7 +55,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Uložiť") { saveConfig() }
-                        .disabled(name.isEmpty || ip.isEmpty || token.count != 32)
+                        .disabled(ip.isEmpty || token.count != 32)
                 }
             }
             .onAppear { loadExisting() }
@@ -60,7 +67,8 @@ struct SettingsView: View {
         saved = false
         do {
             try TokenStorage.save(token)
-            let config = DeviceConfig(name: name, ipAddress: ip, protocolVersion: proto)
+            let config = DeviceConfig(name: "Air Purifier", ipAddress: ip, protocolVersion: proto,
+                                      city: city, aqicnToken: aqicnToken)
             ConfigStore.shared.save(config)
             WidgetCenter.shared.reloadAllTimelines()
             saved = true
@@ -71,10 +79,13 @@ struct SettingsView: View {
 
     private func loadExisting() {
         if let config = ConfigStore.shared.load() {
-            name  = config.name
-            ip    = config.ipAddress
+            if !config.ipAddress.isEmpty  { ip = config.ipAddress }
             proto = config.protocolVersion
+            city  = config.city
+            if !config.aqicnToken.isEmpty { aqicnToken = config.aqicnToken }
         }
-        token = (try? TokenStorage.load()) ?? ""
+        if let saved = try? TokenStorage.load(), !saved.isEmpty {
+            token = saved
+        }
     }
 }

@@ -45,10 +45,9 @@ struct WidgetLargeView: View {
                         }
                     }
                     VStack(alignment: .leading, spacing: 6) {
-                        Label(String(format: "%.1f\u{00B0}C", status.temperature),
-                              systemImage: "thermometer")
-                        Label("\(status.humidity)%", systemImage: "humidity")
-                        Label("M\u{00F3}d: \(status.mode.displayName)", systemImage: "wind")
+                        Label("Mód: \(status.mode.displayName)", systemImage: "wind")
+                        Label("Motor: \(status.motorSpeed) RPM", systemImage: "fan")
+                        Label(status.isOn ? "Zapnuté" : "Vypnuté", systemImage: "power")
                     }
                     .font(.subheadline)
                     Spacer(minLength: 0)
