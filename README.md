@@ -63,4 +63,4 @@ aircheckapp/
 ```
 
 ## License
-Made with care for my pollen allergy by <a href="https://github.com/adamstefanik">Adam Samuel Štefánik</a>. MIT what else you expected — see [LICENSE](LICENSE).
+Made with functioning lungs for my pollen allergy by <a href="https://github.com/adamstefanik">Adam Samuel Štefánik</a>. MIT what else you expected — see [LICENSE](LICENSE).
