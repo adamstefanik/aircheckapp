@@ -30,6 +30,13 @@ struct WidgetSmallView: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                     }
+                    HStack(spacing: 3) {
+                        Image(systemName: "slider.horizontal.3")
+                            .frame(width: 14)
+                        Text(status.mode.displayName)
+                    }
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
                     Spacer(minLength: 0)
                     Text(status.isOn ? "ON" : "OFF")
                         .font(.caption.bold())
