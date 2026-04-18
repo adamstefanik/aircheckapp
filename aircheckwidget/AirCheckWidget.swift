@@ -35,7 +35,8 @@ struct AirCheckTimelineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<PurifierEntry>) -> Void) {
         Task {
             let entry = await fetchEntry()
-            let next = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
+            let minutes = entry.error == nil ? 15 : 2
+            let next = Calendar.current.date(byAdding: .minute, value: minutes, to: Date())!
             completion(Timeline(entries: [entry], policy: .after(next)))
         }
     }

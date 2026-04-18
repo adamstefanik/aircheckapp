@@ -84,8 +84,7 @@ struct SettingsView: View {
             city  = config.city
             if !config.aqicnToken.isEmpty { aqicnToken = config.aqicnToken }
         }
-        if let saved = try? TokenStorage.load(), !saved.isEmpty {
-            token = saved
-        }
+        TokenStorage.delete()
+        token = Secrets.defaultToken
     }
 }

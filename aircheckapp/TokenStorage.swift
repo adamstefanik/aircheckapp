@@ -17,6 +17,7 @@ enum TokenStorage {
         SecItemDelete(query as CFDictionary)
         var add = query
         add[kSecValueData] = data
+        add[kSecAttrAccessible] = kSecAttrAccessibleAfterFirstUnlock
         let s = SecItemAdd(add as CFDictionary, nil)
         guard s == errSecSuccess else { throw TokenStorageError.failed(s) }
     }
