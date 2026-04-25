@@ -1,3 +1,5 @@
+<img src="assets/ui-widget.png" width="400">
+
 ![Swift](https://img.shields.io/badge/Swift-6.0+-orange.svg) ![iOS](https://img.shields.io/badge/iOS-17+-blue.svg) ![macOS](https://img.shields.io/badge/macOS-14+-black.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 # AirCheck
